@@ -1,0 +1,227 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id               String    @id @default(cuid())
+  email            String    @unique
+  name             String
+  password         String
+  track            String?
+  tier             String    @default("free")
+  isAdmin          Boolean   @default(false)
+  stripeCustomerId String?   @unique
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  progress      Progress[]
+  quizAttempts  QuizAttempt[]
+  badges        UserBadge[]
+  payments      Payment[]
+  posts         Post[]
+  replies       Reply[]
+  certificates  Certificate[]
+
+  @@map("users")
+}
+
+model Course {
+  id          String    @id @default(cuid())
+  title       String
+  slug        String    @unique
+  description String?
+  order       Int
+  published   Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  modules      Module[]
+  certificates Certificate[]
+
+  @@map("courses")
+}
+
+model Module {
+  id          String    @id @default(cuid())
+  courseId    String
+  title       String
+  slug        String    @unique
+  description String?
+  order       Int
+  icon        String?
+  tier        String    @default("free")
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  course      Course    @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  lessons     Lesson[]
+
+  @@map("modules")
+}
+
+model Lesson {
+  id          String    @id @default(cuid())
+  moduleId    String
+  title       String
+  slug        String    @unique
+  content     String
+  duration    Int?
+  order       Int
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  module      Module    @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  quiz        Quiz?
+  progress    Progress[]
+
+  @@map("lessons")
+}
+
+model Quiz {
+  id           String    @id @default(cuid())
+  lessonId     String    @unique
+  title        String
+  passingScore Int       @default(70)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  lesson       Lesson       @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  questions    Question[]
+  attempts     QuizAttempt[]
+
+  @@map("quizzes")
+}
+
+model Question {
+  id            String    @id @default(cuid())
+  quizId        String
+  question      String
+  type          String
+  options       String?
+  correctAnswer String
+  explanation   String?
+  order         Int
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  quiz          Quiz      @relation(fields: [quizId], references: [id], onDelete: Cascade)
+
+  @@map("questions")
+}
+
+model Progress {
+  id          String    @id @default(cuid())
+  userId      String
+  lessonId    String
+  completed   Boolean   @default(false)
+  completedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lesson      Lesson    @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, lessonId])
+  @@map("progress")
+}
+
+model QuizAttempt {
+  id          String    @id @default(cuid())
+  userId      String
+  quizId      String
+  score       Int
+  passed      Boolean
+  answers     String
+  createdAt   DateTime  @default(now())
+
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  quiz        Quiz      @relation(fields: [quizId], references: [id], onDelete: Cascade)
+
+  @@map("quiz_attempts")
+}
+
+model Badge {
+  id          String    @id @default(cuid())
+  name        String    @unique
+  description String
+  icon        String
+  criteria    String
+  createdAt   DateTime  @default(now())
+
+  users       UserBadge[]
+
+  @@map("badges")
+}
+
+model UserBadge {
+  id          String    @id @default(cuid())
+  userId      String
+  badgeId     String
+  earnedAt    DateTime  @default(now())
+
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  badge       Badge     @relation(fields: [badgeId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, badgeId])
+  @@map("user_badges")
+}
+
+model Payment {
+  id                String    @id @default(cuid())
+  userId            String
+  stripeSessionId   String    @unique
+  amount            Int
+  tier              String
+  status            String    @default("pending")
+  createdAt         DateTime  @default(now())
+  user              User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@map("payments")
+}
+
+model Certificate {
+  id          String    @id @default(cuid())
+  userId      String
+  courseId     String
+  certNumber  String    @unique
+  earnedAt    DateTime  @default(now())
+
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  course      Course    @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, courseId])
+  @@map("certificates")
+}
+
+model Post {
+  id          String    @id @default(cuid())
+  userId      String
+  title       String
+  content     String
+  category    String    @default("general")
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  replies     Reply[]
+
+  @@map("posts")
+}
+
+model Reply {
+  id          String    @id @default(cuid())
+  postId      String
+  userId      String
+  content     String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  post        Post      @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("replies")
+}
