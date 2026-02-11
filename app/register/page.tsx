@@ -33,16 +33,13 @@ export default function RegisterPage() {
     setLoading(true)
 
     try {
-      const bcrypt = await import('bcryptjs')
-      const hashedPassword = await bcrypt.hash(formData.password, 10)
-
       const res = await fetch('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           name: formData.name,
           email: formData.email,
-          password: hashedPassword,
+          password: formData.password,
           track: formData.track,
         }),
       })

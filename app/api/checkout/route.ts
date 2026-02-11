@@ -1,11 +1,8 @@
 import { NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
-import Stripe from 'stripe'
-
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2023-10-16',
-})
+import { stripe } from '@/lib/stripe'
+import { rateLimit, getClientIp } from '@/lib/rate-limit'
 
 const tierConfig: Record<string, { price: number; name: string; description: string }> = {
   starter: {
@@ -27,6 +24,14 @@ const tierConfig: Record<string, { price: number; name: string; description: str
 
 export async function POST(request: Request) {
   try {
+    const ip = getClientIp(request)
+    if (!rateLimit(`checkout:${ip}`, 10, 15 * 60 * 1000)) {
+      return NextResponse.json(
+        { error: 'Too many requests. Please try again later.' },
+        { status: 429 }
+      )
+    }
+
     const session = await getServerSession(authOptions)
 
     if (!session?.user?.email) {
@@ -50,7 +55,6 @@ export async function POST(request: Request) {
 
     const checkoutSession = await stripe.checkout.sessions.create({
       mode: 'payment',
-      payment_method_types: ['card'],
       customer_email: session.user.email,
       line_items: [
         {

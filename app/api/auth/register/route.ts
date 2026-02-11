@@ -1,10 +1,34 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { sendEmail, welcomeEmail } from '@/lib/email'
+import bcrypt from 'bcryptjs'
+import { rateLimit, getClientIp } from '@/lib/rate-limit'
 
 export async function POST(req: NextRequest) {
   try {
+    const ip = getClientIp(req)
+    if (!rateLimit(`register:${ip}`, 5, 15 * 60 * 1000)) {
+      return NextResponse.json(
+        { error: 'Too many registration attempts. Please try again later.' },
+        { status: 429 }
+      )
+    }
+
     const { name, email, password, track } = await req.json()
+
+    if (!name || !email || !password) {
+      return NextResponse.json(
+        { error: 'Name, email, and password are required' },
+        { status: 400 }
+      )
+    }
+
+    if (password.length < 8) {
+      return NextResponse.json(
+        { error: 'Password must be at least 8 characters' },
+        { status: 400 }
+      )
+    }
 
     const existing = await prisma.user.findUnique({
       where: { email }
@@ -17,11 +41,13 @@ export async function POST(req: NextRequest) {
       )
     }
 
+    const hashedPassword = await bcrypt.hash(password, 10)
+
     const user = await prisma.user.create({
       data: {
         name,
         email,
-        password,
+        password: hashedPassword,
         track,
       }
     })

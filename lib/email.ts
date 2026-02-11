@@ -1,4 +1,10 @@
-// Email system - logs to console. Swap in Resend/SendGrid later.
+import { Resend } from 'resend'
+
+const resend = process.env.RESEND_API_KEY
+  ? new Resend(process.env.RESEND_API_KEY)
+  : null
+
+const FROM_EMAIL = process.env.EMAIL_FROM || 'AI Mastery Academy <onboarding@resend.dev>'
 
 interface EmailParams {
   to: string
@@ -7,53 +13,78 @@ interface EmailParams {
 }
 
 export async function sendEmail({ to, subject, html }: EmailParams) {
-  console.log(`\n📧 EMAIL SENT`)
-  console.log(`   To: ${to}`)
-  console.log(`   Subject: ${subject}`)
-  console.log(`   Body preview: ${html.replace(/<[^>]*>/g, '').substring(0, 100)}...`)
-  console.log('')
+  if (!resend) {
+    console.log(`[Email] No RESEND_API_KEY set — logging instead:`)
+    console.log(`  To: ${to}`)
+    console.log(`  Subject: ${subject}`)
+    return
+  }
+
+  try {
+    await resend.emails.send({
+      from: FROM_EMAIL,
+      to,
+      subject,
+      html,
+    })
+  } catch (error) {
+    console.error('[Email] Failed to send:', error)
+  }
 }
 
 export function welcomeEmail(name: string) {
+  const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000'
   return {
     subject: 'Welcome to AI Mastery Academy!',
     html: `
-      <h1>Welcome, ${name}!</h1>
-      <p>You've taken the first step toward mastering AI. Your free tier gives you access to Module 1 — start learning today.</p>
-      <p><a href="${process.env.NEXTAUTH_URL || 'http://localhost:3000'}/course">Start Learning</a></p>
+      <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+        <h1 style="color: #1e293b;">Welcome, ${name}!</h1>
+        <p style="color: #475569; font-size: 16px; line-height: 1.6;">You've taken the first step toward mastering AI. Your free tier gives you access to Modules 1 &amp; 2 — start learning today.</p>
+        <a href="${baseUrl}/course" style="display: inline-block; padding: 12px 24px; background: linear-gradient(to right, #3b82f6, #8b5cf6); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; margin-top: 16px;">Start Learning</a>
+      </div>
     `,
   }
 }
 
 export function paymentConfirmationEmail(name: string, tier: string) {
+  const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000'
+  const tierLabel = tier.charAt(0).toUpperCase() + tier.slice(1)
   return {
-    subject: `You're now a ${tier.charAt(0).toUpperCase() + tier.slice(1)} member!`,
+    subject: `You're now a ${tierLabel} member!`,
     html: `
-      <h1>Payment Confirmed</h1>
-      <p>Hey ${name}, your upgrade to <strong>${tier}</strong> tier is complete. You now have access to all ${tier}-tier modules.</p>
-      <p><a href="${process.env.NEXTAUTH_URL || 'http://localhost:3000'}/course">Continue Learning</a></p>
+      <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+        <h1 style="color: #1e293b;">Payment Confirmed</h1>
+        <p style="color: #475569; font-size: 16px; line-height: 1.6;">Hey ${name}, your upgrade to <strong>${tierLabel}</strong> tier is complete. You now have access to all ${tierLabel}-tier modules.</p>
+        <a href="${baseUrl}/course" style="display: inline-block; padding: 12px 24px; background: linear-gradient(to right, #3b82f6, #8b5cf6); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; margin-top: 16px;">Continue Learning</a>
+      </div>
     `,
   }
 }
 
 export function badgeEarnedEmail(name: string, badgeName: string, badgeIcon: string) {
+  const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000'
   return {
     subject: `You earned a badge: ${badgeName}!`,
     html: `
-      <h1>${badgeIcon} Badge Earned!</h1>
-      <p>Congrats ${name}, you just earned the <strong>${badgeName}</strong> badge.</p>
-      <p><a href="${process.env.NEXTAUTH_URL || 'http://localhost:3000'}/dashboard">View Your Badges</a></p>
+      <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+        <h1 style="color: #1e293b;">${badgeIcon} Badge Earned!</h1>
+        <p style="color: #475569; font-size: 16px; line-height: 1.6;">Congrats ${name}, you just earned the <strong>${badgeName}</strong> badge.</p>
+        <a href="${baseUrl}/dashboard" style="display: inline-block; padding: 12px 24px; background: linear-gradient(to right, #3b82f6, #8b5cf6); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; margin-top: 16px;">View Your Badges</a>
+      </div>
     `,
   }
 }
 
 export function certificateEarnedEmail(name: string, courseName: string, certId: string) {
+  const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000'
   return {
     subject: `Your certificate is ready!`,
     html: `
-      <h1>Certificate of Completion</h1>
-      <p>Congratulations ${name}! You've completed <strong>${courseName}</strong>.</p>
-      <p><a href="${process.env.NEXTAUTH_URL || 'http://localhost:3000'}/certificate/${certId}">View Your Certificate</a></p>
+      <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+        <h1 style="color: #1e293b;">Certificate of Completion</h1>
+        <p style="color: #475569; font-size: 16px; line-height: 1.6;">Congratulations ${name}! You've completed <strong>${courseName}</strong>.</p>
+        <a href="${baseUrl}/certificate/${certId}" style="display: inline-block; padding: 12px 24px; background: linear-gradient(to right, #3b82f6, #8b5cf6); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; margin-top: 16px;">View Your Certificate</a>
+      </div>
     `,
   }
 }

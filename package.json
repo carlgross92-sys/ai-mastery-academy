@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "prisma generate && prisma db push --accept-data-loss && next build",
+    "build": "prisma generate && prisma db push && next build",
     "postinstall": "prisma generate",
     "start": "next start",
     "lint": "next lint"
@@ -19,13 +19,14 @@
     "next-auth": "^4.24.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "stripe": "^14.7.0"
+    "resend": "^6.9.2",
+    "stripe": "^20.3.1"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
     "@types/node": "^20.10.5",
     "@types/react": "^18.2.45",
     "@types/react-dom": "^18.2.18",
-    "@types/bcryptjs": "^2.4.6",
     "autoprefixer": "^10.4.16",
     "postcss": "^8.4.32",
     "prisma": "^5.7.0",
