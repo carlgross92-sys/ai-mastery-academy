@@ -2,7 +2,9 @@ import { NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { stripe } from '@/lib/stripe'
+import { prisma } from '@/lib/prisma'
 import { rateLimit, getClientIp } from '@/lib/rate-limit'
+import { PROMO_CONFIG, isPromoExpiredByTime } from '@/lib/promo'
 
 const tierConfig: Record<string, { price: number; name: string; description: string }> = {
   starter: {
@@ -20,6 +22,20 @@ const tierConfig: Record<string, { price: number; name: string; description: str
     name: 'AI Mastery Academy - Master',
     description: 'Lifetime access to all 12 Modules: Everything in Pro plus Voice & Video AI, AI Strategy & Leadership, Advanced Techniques, The Future of AI, coaching calls, and private mastermind community.',
   },
+}
+
+async function isPromoActive(): Promise<boolean> {
+  if (process.env.PROMO_ACTIVE === 'false') return false
+  if (isPromoExpiredByTime()) return false
+
+  const purchaseCount = await prisma.payment.count({
+    where: {
+      status: 'completed',
+      createdAt: { gte: PROMO_CONFIG.startDate },
+    },
+  })
+
+  return purchaseCount < PROMO_CONFIG.maxSpots
 }
 
 export async function POST(request: Request) {
@@ -51,7 +67,14 @@ export async function POST(request: Request) {
       )
     }
 
-    const config = tierConfig[tier]
+    const config = { ...tierConfig[tier] }
+
+    // Apply promo pricing for all paid tiers
+    const promoTier = PROMO_CONFIG.tiers[tier as keyof typeof PROMO_CONFIG.tiers]
+    if (promoTier && await isPromoActive()) {
+      config.price = promoTier.promoPriceCents
+      config.name = `${config.name} (Launch Special)`
+    }
 
     const checkoutSession = await stripe.checkout.sessions.create({
       mode: 'payment',

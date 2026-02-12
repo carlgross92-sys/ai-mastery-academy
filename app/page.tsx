@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 
 const modules = [
   { num: 1, title: 'AI Architecture & Cognition', icon: '🧠', color: 'from-blue-500 to-cyan-500', desc: 'How AI actually thinks', tier: 'free' },
@@ -76,6 +77,16 @@ export default function HomePage() {
         <div className="absolute bottom-20 right-10 w-96 h-96 bg-purple-500/15 rounded-full blur-[128px] animate-pulse-glow" style={{ animationDelay: '1.5s' }} />
 
         <div className="relative max-w-6xl mx-auto text-center">
+          {/* Logo */}
+          <Image
+            src="/logo.svg"
+            alt="AI Mastery Academy Logo"
+            width={80}
+            height={80}
+            className="mx-auto mb-6 rounded-2xl"
+            priority
+          />
+
           {/* Badge */}
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-blue-500/30 bg-blue-500/10 text-sm font-medium text-blue-300 mb-8">
             <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
@@ -235,6 +246,18 @@ export default function HomePage() {
                 <div className={`mt-4 h-0.5 rounded-full bg-gradient-to-r ${mod.color} opacity-0 group-hover:opacity-100 transition-opacity`} />
               </div>
             ))}
+          </div>
+
+          {/* Course Preview Images — visible to scrapers */}
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-12">
+            <Image src="/images/module-ai-foundations.svg" alt="AI Architecture & Cognition - Understand how AI actually thinks" width={400} height={300} className="rounded-xl border border-slate-800 w-full h-auto" />
+            <Image src="/images/module-prompt-engineering.svg" alt="Prompt Engineering Mastery - Master the art of AI communication" width={400} height={300} className="rounded-xl border border-slate-800 w-full h-auto" />
+            <Image src="/images/module-business-ai.svg" alt="Business AI Integration - Real-world AI applications for business" width={400} height={300} className="rounded-xl border border-slate-800 w-full h-auto" />
+            <Image src="/images/module-advanced-workflows.svg" alt="Advanced AI Workflows - Build multi-step AI automation" width={400} height={300} className="rounded-xl border border-slate-800 w-full h-auto" />
+            <Image src="/images/module-content-marketing.svg" alt="AI Content & Marketing - AI-powered content creation" width={400} height={300} className="rounded-xl border border-slate-800 w-full h-auto" />
+            <Image src="/images/module-data-analytics.svg" alt="Data & Analytics - AI-driven insights and analysis" width={400} height={300} className="rounded-xl border border-slate-800 w-full h-auto" />
+            <Image src="/images/module-custom-solutions.svg" alt="Custom AI Solutions - Build your own AI assistants" width={400} height={300} className="rounded-xl border border-slate-800 w-full h-auto" />
+            <Image src="/images/module-strategy.svg" alt="AI Strategy & Leadership - Lead AI transformation" width={400} height={300} className="rounded-xl border border-slate-800 w-full h-auto" />
           </div>
 
           <div className="text-center mt-12">

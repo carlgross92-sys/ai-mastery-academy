@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600">
+  <defs>
+    <linearGradient id="brandGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="bgGlow1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:0.15" />
+      <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:0.05" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="600" fill="#0a0f1e" rx="12" ry="12"/>
+  <rect x="1" y="1" width="798" height="598" fill="none" stroke="#1e293b" stroke-width="1" rx="12" ry="12"/>
+
+  <!-- Subtle glow behind icon -->
+  <circle cx="400" cy="220" r="140" fill="url(#bgGlow1)" opacity="0.6"/>
+
+  <!-- Icon circle -->
+  <circle cx="400" cy="220" r="70" fill="url(#brandGrad1)" opacity="0.15" stroke="url(#brandGrad1)" stroke-width="2"/>
+
+  <!-- Brain / Neural Network Icon -->
+  <!-- Central node -->
+  <circle cx="400" cy="220" r="8" fill="url(#brandGrad1)"/>
+  <!-- Surrounding nodes -->
+  <circle cx="365" cy="190" r="5" fill="#3b82f6"/>
+  <circle cx="435" cy="190" r="5" fill="#6d5cf6"/>
+  <circle cx="365" cy="250" r="5" fill="#5b6ef6"/>
+  <circle cx="435" cy="250" r="5" fill="#8b5cf6"/>
+  <circle cx="345" cy="220" r="5" fill="#3b82f6"/>
+  <circle cx="455" cy="220" r="5" fill="#8b5cf6"/>
+  <!-- Outer nodes -->
+  <circle cx="340" cy="180" r="4" fill="#3b82f6" opacity="0.7"/>
+  <circle cx="460" cy="180" r="4" fill="#8b5cf6" opacity="0.7"/>
+  <circle cx="340" cy="260" r="4" fill="#5b6ef6" opacity="0.7"/>
+  <circle cx="460" cy="260" r="4" fill="#8b5cf6" opacity="0.7"/>
+  <!-- Connection lines -->
+  <line x1="400" y1="220" x2="365" y2="190" stroke="#3b82f6" stroke-width="1.5" opacity="0.6"/>
+  <line x1="400" y1="220" x2="435" y2="190" stroke="#6d5cf6" stroke-width="1.5" opacity="0.6"/>
+  <line x1="400" y1="220" x2="365" y2="250" stroke="#5b6ef6" stroke-width="1.5" opacity="0.6"/>
+  <line x1="400" y1="220" x2="435" y2="250" stroke="#8b5cf6" stroke-width="1.5" opacity="0.6"/>
+  <line x1="400" y1="220" x2="345" y2="220" stroke="#3b82f6" stroke-width="1.5" opacity="0.6"/>
+  <line x1="400" y1="220" x2="455" y2="220" stroke="#8b5cf6" stroke-width="1.5" opacity="0.6"/>
+  <line x1="365" y1="190" x2="340" y2="180" stroke="#3b82f6" stroke-width="1" opacity="0.4"/>
+  <line x1="435" y1="190" x2="460" y2="180" stroke="#8b5cf6" stroke-width="1" opacity="0.4"/>
+  <line x1="365" y1="250" x2="340" y2="260" stroke="#5b6ef6" stroke-width="1" opacity="0.4"/>
+  <line x1="435" y1="250" x2="460" y2="260" stroke="#8b5cf6" stroke-width="1" opacity="0.4"/>
+  <line x1="365" y1="190" x2="345" y2="220" stroke="#3b82f6" stroke-width="1" opacity="0.3"/>
+  <line x1="435" y1="190" x2="455" y2="220" stroke="#8b5cf6" stroke-width="1" opacity="0.3"/>
+  <line x1="365" y1="250" x2="345" y2="220" stroke="#5b6ef6" stroke-width="1" opacity="0.3"/>
+  <line x1="435" y1="250" x2="455" y2="220" stroke="#8b5cf6" stroke-width="1" opacity="0.3"/>
+
+  <!-- Module number -->
+  <text x="400" y="340" text-anchor="middle" fill="#3b82f6" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="600" letter-spacing="3">MODULE 1</text>
+
+  <!-- Module title -->
+  <text x="400" y="385" text-anchor="middle" fill="#f1f5f9" font-family="Arial, Helvetica, sans-serif" font-size="32" font-weight="700">AI Architecture &amp; Cognition</text>
+
+  <!-- Tagline -->
+  <text x="400" y="420" text-anchor="middle" fill="#94a3b8" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="400">Understand how AI actually thinks</text>
+
+  <!-- Bottom gradient accent bar -->
+  <rect x="100" y="530" width="600" height="3" rx="1.5" fill="url(#brandGrad1)" opacity="0.8"/>
+
+  <!-- Branding -->
+  <text x="400" y="565" text-anchor="middle" fill="#475569" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="600" letter-spacing="4">AI MASTERY ACADEMY</text>
+</svg>

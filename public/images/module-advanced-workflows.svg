@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600">
+  <defs>
+    <linearGradient id="brandGrad4" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="bgGlow4" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:0.15" />
+      <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:0.05" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="600" fill="#0a0f1e" rx="12" ry="12"/>
+  <rect x="1" y="1" width="798" height="598" fill="none" stroke="#1e293b" stroke-width="1" rx="12" ry="12"/>
+
+  <!-- Subtle glow behind icon -->
+  <circle cx="400" cy="220" r="140" fill="url(#bgGlow4)" opacity="0.6"/>
+
+  <!-- Icon circle -->
+  <circle cx="400" cy="220" r="70" fill="url(#brandGrad4)" opacity="0.15" stroke="url(#brandGrad4)" stroke-width="2"/>
+
+  <!-- Lightning Bolt Icon -->
+  <path d="M408,185 L392,218 L405,218 L392,255 L418,212 L405,212 Z"
+        fill="url(#brandGrad4)" stroke="none" opacity="0.9"/>
+  <!-- Glow effect -->
+  <path d="M408,185 L392,218 L405,218 L392,255 L418,212 L405,212 Z"
+        fill="none" stroke="#3b82f6" stroke-width="1" opacity="0.3"/>
+  <!-- Flow dots around the bolt -->
+  <circle cx="370" cy="200" r="3" fill="#3b82f6" opacity="0.6"/>
+  <circle cx="360" cy="220" r="2.5" fill="#4d72f6" opacity="0.5"/>
+  <circle cx="370" cy="240" r="3" fill="#5f67f6" opacity="0.6"/>
+  <circle cx="430" cy="200" r="3" fill="#7560f6" opacity="0.6"/>
+  <circle cx="440" cy="220" r="2.5" fill="#8b5cf6" opacity="0.5"/>
+  <circle cx="430" cy="240" r="3" fill="#8b5cf6" opacity="0.6"/>
+  <!-- Connecting arcs -->
+  <path d="M370,200 Q355,220 370,240" fill="none" stroke="#3b82f6" stroke-width="1" opacity="0.3"/>
+  <path d="M430,200 Q445,220 430,240" fill="none" stroke="#8b5cf6" stroke-width="1" opacity="0.3"/>
+
+  <!-- Module number -->
+  <text x="400" y="340" text-anchor="middle" fill="#3b82f6" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="600" letter-spacing="3">MODULE 4</text>
+
+  <!-- Module title -->
+  <text x="400" y="385" text-anchor="middle" fill="#f1f5f9" font-family="Arial, Helvetica, sans-serif" font-size="32" font-weight="700">Advanced AI Workflows</text>
+
+  <!-- Tagline -->
+  <text x="400" y="420" text-anchor="middle" fill="#94a3b8" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="400">Build multi-step AI automation</text>
+
+  <!-- Bottom gradient accent bar -->
+  <rect x="100" y="530" width="600" height="3" rx="1.5" fill="url(#brandGrad4)" opacity="0.8"/>
+
+  <!-- Branding -->
+  <text x="400" y="565" text-anchor="middle" fill="#475569" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="600" letter-spacing="4">AI MASTERY ACADEMY</text>
+</svg>
