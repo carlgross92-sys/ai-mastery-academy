@@ -8,7 +8,7 @@ export const PROMO_CONFIG = {
   endDate: new Date('2026-02-19T00:00:00Z'),
 
   // Spots (shared across all tiers)
-  maxSpots: 50,
+  maxSpots: 100,
 
   // Per-tier promo pricing (in cents for Stripe)
   tiers: {

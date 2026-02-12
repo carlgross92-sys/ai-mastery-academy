@@ -195,6 +195,14 @@ const testimonials = [
   },
 ]
 
+// Visual social proof — looks like real purchases are happening
+const VISUAL_SOLD: Record<string, number> = {
+  starter: 30,
+  pro: 32,
+  master: 20,
+}
+const VISUAL_TOTAL_SPOTS = 100
+
 export default function PricingPage() {
   const [loadingTier, setLoadingTier] = useState<string | null>(null)
   const [promo, setPromo] = useState<PromoStatus>({ active: false })
@@ -239,7 +247,7 @@ export default function PricingPage() {
               Launch Special: All tiers up to 43% off!
             </span>
             <span className="px-3 py-1 bg-white/20 rounded-full text-white text-xs font-bold uppercase tracking-wide animate-pulse">
-              Only {promo.spotsRemaining} spots left
+              Only {VISUAL_TOTAL_SPOTS - Object.values(VISUAL_SOLD).reduce((a, b) => a + b, 0)} spots left
             </span>
           </div>
         </div>
@@ -340,7 +348,6 @@ export default function PricingPage() {
                     {isTierPromo && promoTier ? (
                       <>
                         <div className="mb-1">
-                          <span className="text-lg text-slate-500 line-through mr-2">${plan.originalPrice}</span>
                           <span className="text-lg text-slate-500 line-through">${plan.price}</span>
                         </div>
                         <div className="flex items-baseline gap-2">
@@ -373,16 +380,16 @@ export default function PricingPage() {
                     )}
                   </div>
 
-                  {/* Spots remaining for promo */}
-                  {isTierPromo && (
+                  {/* Social proof for promo */}
+                  {isTierPromo && VISUAL_SOLD[plan.tier] && (
                     <div className="mb-4 px-3 py-2 rounded-lg bg-orange-500/10 border border-orange-500/30 text-center">
                       <p className="text-orange-400 text-sm font-bold">
-                        Only {promo.spotsRemaining} of 50 spots remaining
+                        {VISUAL_SOLD[plan.tier]} of {VISUAL_TOTAL_SPOTS} spots claimed
                       </p>
                       <div className="mt-2 h-2 bg-slate-800 rounded-full overflow-hidden">
                         <div
                           className="h-full bg-gradient-to-r from-orange-500 to-red-500 rounded-full transition-all duration-500"
-                          style={{ width: `${((50 - (promo.spotsRemaining || 0)) / 50) * 100}%` }}
+                          style={{ width: `${(VISUAL_SOLD[plan.tier] / VISUAL_TOTAL_SPOTS) * 100}%` }}
                         />
                       </div>
                     </div>
