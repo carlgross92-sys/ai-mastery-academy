@@ -143,6 +143,24 @@ export default function RegisterPage() {
               />
             </div>
 
+            <div>
+              <label htmlFor="track" className="block text-sm font-medium mb-2 text-slate-300">
+                What best describes you?
+              </label>
+              <select
+                id="track"
+                value={formData.track}
+                onChange={(e) => setFormData({ ...formData, track: e.target.value })}
+                className="w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition text-white"
+              >
+                <option value="Business">Business Owner / Entrepreneur</option>
+                <option value="Marketing">Marketing / Content Creator</option>
+                <option value="Developer">Developer / Technical</option>
+                <option value="Student">Student / Career Changer</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+
             <button
               type="submit"
               disabled={loading}

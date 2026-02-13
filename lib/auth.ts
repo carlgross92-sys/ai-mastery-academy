@@ -53,6 +53,7 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, user, trigger, session }) {
       if (user) {
         token.id = user.id
+        token.email = user.email
         token.tier = user.tier
         token.isAdmin = user.isAdmin
       }

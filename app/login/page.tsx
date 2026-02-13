@@ -2,11 +2,14 @@
 
 import { useState } from 'react'
 import { signIn } from 'next-auth/react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 
 export default function LoginPage() {
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const justRegistered = searchParams.get('registered') === 'true'
+  const returnTo = searchParams.get('returnTo')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
@@ -28,7 +31,7 @@ export default function LoginPage() {
     if (result?.error) {
       setError('Invalid email or password')
     } else {
-      router.push('/dashboard')
+      router.push(returnTo || '/dashboard')
     }
   }
 
@@ -48,6 +51,15 @@ export default function LoginPage() {
 
         <div className="rounded-2xl bg-slate-900/80 backdrop-blur border border-slate-800 p-8">
           <form onSubmit={handleSubmit} className="space-y-5">
+            {justRegistered && (
+              <div className="flex items-center gap-3 p-4 bg-green-500/10 border border-green-500/20 rounded-xl text-green-400 text-sm">
+                <svg className="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clipRule="evenodd" />
+                </svg>
+                Account created successfully! Sign in to get started.
+              </div>
+            )}
+
             {error && (
               <div className="flex items-center gap-3 p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 text-sm">
                 <svg className="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">

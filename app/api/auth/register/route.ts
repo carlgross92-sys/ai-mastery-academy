@@ -57,9 +57,25 @@ export async function POST(req: NextRequest) {
     await sendEmail({ to: email, ...welcome })
 
     return NextResponse.json({ id: user.id })
-  } catch (error) {
+  } catch (error: any) {
+    console.error('Registration error:', error)
+
+    if (error?.code === 'P2002') {
+      return NextResponse.json(
+        { error: 'This email is already registered. Try signing in instead.' },
+        { status: 400 }
+      )
+    }
+
+    if (error?.code === 'P2003' || error?.code === 'P2011') {
+      return NextResponse.json(
+        { error: 'Missing required information. Please fill in all fields.' },
+        { status: 400 }
+      )
+    }
+
     return NextResponse.json(
-      { error: 'Registration failed' },
+      { error: 'Registration failed. Please try again or contact support if the issue persists.' },
       { status: 500 }
     )
   }

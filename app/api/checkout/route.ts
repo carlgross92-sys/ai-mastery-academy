@@ -67,6 +67,14 @@ export async function POST(request: Request) {
       )
     }
 
+    if (!process.env.STRIPE_SECRET_KEY) {
+      console.error('Checkout error: STRIPE_SECRET_KEY is not configured')
+      return NextResponse.json(
+        { error: 'Payment system is not configured. Please contact support.' },
+        { status: 503 }
+      )
+    }
+
     const config = { ...tierConfig[tier] }
 
     // Apply promo pricing for all paid tiers

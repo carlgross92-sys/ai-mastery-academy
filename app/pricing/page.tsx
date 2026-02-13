@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 
 // ── Promo state type ──
@@ -105,7 +106,7 @@ const tiers = [
     originalPrice: 800,
     period: 'lifetime access',
     tier: 'pro',
-    paymentPlan: 'or 3 payments of $89',
+    paymentPlan: 'or 3 payments of $83',
     badge: 'BEST VALUE',
     modules: 'Modules 1-8 (25 lessons) + certificate',
     features: [
@@ -130,7 +131,7 @@ const tiers = [
     originalPrice: 2400,
     period: 'lifetime access',
     tier: 'master',
-    paymentPlan: 'or 4 payments of $219',
+    paymentPlan: 'or 4 payments of $200',
     badge: null,
     modules: 'All 12 modules (37 lessons)',
     features: [
@@ -204,6 +205,7 @@ const VISUAL_SOLD: Record<string, number> = {
 const VISUAL_TOTAL_SPOTS = 100
 
 export default function PricingPage() {
+  const router = useRouter()
   const [loadingTier, setLoadingTier] = useState<string | null>(null)
   const [promo, setPromo] = useState<PromoStatus>({ active: false })
 
@@ -224,6 +226,12 @@ export default function PricingPage() {
         body: JSON.stringify({ tier }),
       })
       const data = await res.json()
+
+      if (res.status === 401) {
+        // User not logged in — redirect to login, then bring them back to pricing
+        router.push('/login?returnTo=/pricing')
+        return
+      }
 
       if (data.url) {
         window.location.href = data.url
