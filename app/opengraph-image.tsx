@@ -109,7 +109,7 @@ export default async function Image() {
           {[
             { value: '12', label: 'Modules' },
             { value: '60+', label: 'Lessons' },
-            { value: '4.9★', label: 'Rating' },
+            { value: 'Free', label: 'To Start' },
           ].map((stat) => (
             <div
               key={stat.label}
@@ -139,7 +139,7 @@ export default async function Image() {
             color: 'white',
           }}
         >
-          Start Free - Module 1 Included
+          Start Free - 2 Modules Included
         </div>
 
         {/* Bottom bar */}

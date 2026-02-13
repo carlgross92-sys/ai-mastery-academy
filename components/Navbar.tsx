@@ -25,7 +25,7 @@ export default function Navbar() {
 
           {/* Desktop nav */}
           <div className="hidden md:flex items-center space-x-1">
-            <Link href="/course" className="px-4 py-2 text-sm text-slate-300 hover:text-white hover:bg-white/5 rounded-lg transition">
+            <Link href={session ? '/course' : '/#modules'} className="px-4 py-2 text-sm text-slate-300 hover:text-white hover:bg-white/5 rounded-lg transition">
               Courses
             </Link>
             <Link href="/pricing" className="px-4 py-2 text-sm text-slate-300 hover:text-white hover:bg-white/5 rounded-lg transition">
@@ -93,7 +93,7 @@ export default function Navbar() {
         <div className="md:hidden border-t border-slate-800 bg-slate-900/95 backdrop-blur">
           <div className="px-4 py-4 space-y-1">
             <Link
-              href="/course"
+              href={session ? '/course' : '/#modules'}
               onClick={() => setMobileOpen(false)}
               className="block px-4 py-3 text-slate-300 hover:text-white hover:bg-white/5 rounded-lg transition"
             >
